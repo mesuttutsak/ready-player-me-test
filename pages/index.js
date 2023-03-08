@@ -8,7 +8,7 @@ const AvatarView = dynamic(() => import("@sarge/avatar-view"), {
 });
 
 export default function Home() {
-  
+
   const options3DSetting = {
     faceTracking: true,
     orbitControl: true,
@@ -30,7 +30,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <AvatarView type="3D" options3D={options3DSetting} options2D={options2DSetting} url="https://models.readyplayer.me/63f31c5c9233b3995d6a9563.glb" />
+        <AvatarView type="3D" options3d={options3DSetting} options2d={options2DSetting} url="https://models.readyplayer.me/63f31c5c9233b3995d6a9563.glb" />
       </main>
     </div>
   )
