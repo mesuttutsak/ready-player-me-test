@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-export default function otherPage() {
-  const router = useRouter();
+export default function OtherPage() {
+    const router = useRouter();
 
   return (
     <div>
       <main>
-        <button onClick={() => router.push("/")}>go to home</button>
+        <button onClick={() => router.push("/")}>back to avatarPage</button>
       </main>
     </div>
   );

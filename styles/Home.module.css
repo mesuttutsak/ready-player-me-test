@@ -12,6 +12,13 @@
   align-items: center;
 }
 
+.avartars {
+  display: flex;
+  flex-direction: row;
+}
+
+.avartar { }
+
 .footer {
   display: flex;
   flex: 1;
