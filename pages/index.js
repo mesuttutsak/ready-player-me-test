@@ -1,25 +1,37 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { useRouter } from "next/router";
 
-import dynamic from 'next/dynamic'
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 const AvatarView = dynamic(() => import("@sarge/avatar-view"), {
-  ssr: false
+  ssr: false,
 });
 
 export default function Home() {
-  
+  const router = useRouter();
+
+  const [url, setUrl] = useState(null);
+
+  useEffect(() => {
+    setUrl(null);
+    setUrl(
+      "https://models.readyplayer.me/63f31c5c9233b3995d6a9563.glb?morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight&useHands=false&textureAtlas=512&meshLod=2&morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight"
+    );
+  }, []);
+
   const options3DSetting = {
-    faceTracking: true,
-    orbitControl: true,
+    faceTracking: false,
+    orbitControl: false,
     followCursor: true,
-    blinkEyes: true,
-  }
+    blinkEyes: false,
+  };
 
   const options2DSetting = {
     scale: [1.4, 1.4],
-    position: [0, -5]
-  }
+    position: [0, -5],
+  };
 
   return (
     <div className={styles.container}>
@@ -30,8 +42,17 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <AvatarView type="3D" options3D={options3DSetting} options2D={options2DSetting} url="https://models.readyplayer.me/63f31c5c9233b3995d6a9563.glb" />
+        <AvatarView
+          type="3D"
+          options3d={options3DSetting}
+          options2d={options2DSetting}
+          url="url"
+        />
+
+        <button onClick={() => router.push("/otherPage")}>
+          go to other page
+        </button>
       </main>
     </div>
-  )
+  );
 }
