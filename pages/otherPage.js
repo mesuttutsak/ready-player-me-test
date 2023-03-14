@@ -7,7 +7,7 @@ export default function OtherPage() {
   return (
     <div>
       <main>
-        <button onClick={() => router.push("/")}>go to home</button>
+        <button onClick={() => router.push("/")}>back to avatarPage</button>
       </main>
     </div>
   );

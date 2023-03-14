@@ -21,14 +21,10 @@ export default function Home() {
   } = useSelector((state) => state);
 
   const [url, setUrl] = useState(null);
-
-  useEffect(() => {
-    setUrl(null);
-    dispatch({ type: "setAvatarUrl", payload: "https://models.readyplayer.me/63f31c5c9233b3995d6a9563.glb" });
-  }, []);
   
   useEffect(() => {
-    setUrl(avatarUrl !== null && avatarUrl+'?morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight&useHands=false&textureAtlas=512&meshLod=2&morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight');
+    setUrl(null)
+    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl+'?morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight&useHands=false&textureAtlas=512&meshLod=2&morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight');
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -43,6 +39,56 @@ export default function Home() {
     position: [0, -5],
   };
 
+  const iframeRef = useRef(null);
+
+  const subdomain = 'demo';  // proje
+  useEffect(() =>{
+    if(iframeRef.current){
+      iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&bodyType=halfbody`;
+
+      window.addEventListener('message', subscribe);
+      document.addEventListener('message', subscribe);
+    }
+  }, [url])
+
+  function subscribe(event) {
+    const json = parse(event);
+
+    if (json?.source !== 'readyplayerme') {
+      return;
+    }
+
+    // Susbribe to all events sent from Ready Player Me once frame is ready
+    if (json.eventName === 'v1.frame.ready' && iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage(
+        JSON.stringify({
+          target: 'readyplayerme',
+          type: 'subscribe',
+          eventName: 'v1.**'
+        }),
+        '*'
+      );
+    }
+
+    // Get avatar GLB URL
+    if (json.eventName === 'v1.avatar.exported') {
+      dispatch({ type: "setAvatarUrl", payload: json.data.url });
+    }
+
+    // Get user id
+    if (json.eventName === 'v1.user.set') {
+      console.log(`User with id ${json.data.id} set: ${JSON.stringify(json)}`);
+    }
+  }
+
+  function parse(event) {
+    try {
+      return JSON.parse(event.data);
+    } catch (error) {
+      return null;
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -52,42 +98,48 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.avartars}>
-          <div className={styles.avatar}>
-            <h2>3D</h2>
-            <AvatarView
-              style={{
-                opacity: url === null ? 0 : 1,
-                width: "150px",
-                height: "150px",
-                margin: "0 1rem",
-                background: 'trasparent'
-              }}
-              type="3D"
-              options3d={options3DSetting}
-              url={`${url}`}
-            />
-          </div>
+        {url !== null ? <>
+                <div className={styles.avartars}>
+                <div className={styles.avatar}>
+                  <h2>3D</h2>
+                  <AvatarView
+                    style={{
+                      opacity: url === null ? 0 : 1,
+                      width: "150px",
+                      height: "150px",
+                      margin: "0 1rem",
+                      background: 'trasparent'
+                    }}
+                    type="3D"
+                    options3d={options3DSetting}
+                    url={`${url}`}
+                  />
+                </div>
+      
+                <div className={styles.avatar}>
+                  <h2>2D</h2>
+                  <AvatarView
+                    style={{
+                      opacity: url === null ? 0 : 1,
+                      width: "150px",
+                      height: "150px",
+                      margin: "0 1rem",
+                    }}
+                    type="2D"
+                    options2d={options2DSetting}
+                    url={`${url}`}
+                  />
+                </div>
+              </div>
+              
 
-          <div className={styles.avatar}>
-            <h2>2D</h2>
-            <AvatarView
-              style={{
-                opacity: url === null ? 0 : 1,
-                width: "150px",
-                height: "150px",
-                margin: "0 1rem",
-              }}
-              type="2D"
-              options2d={options2DSetting}
-              url={`${url}`}
-            />
-          </div>
-        </div>
-
-        <button onClick={() => router.push("/otherPage")}>
-          go to other page
-        </button>
+              <button onClick={() => router.push("/otherPage")}>
+              go to other page
+            </button>
+            </>
+        : 
+        <iframe style={{width: 480, height: 640}} ref={iframeRef} allow="camera *; microphone *; clipboard-write" />
+        }
       </main>
     </div>
   );
