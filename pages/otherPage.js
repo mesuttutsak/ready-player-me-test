@@ -8,7 +8,5 @@ export default function otherPage() {
     <div>
       <main>
         <button onClick={() => router.push("/")}>go to home</button>
-      </main>
-    </div>
-  );
-}
+      </ma4a610i3194a970
+    </4a610d3194a970
