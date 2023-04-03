@@ -31,7 +31,7 @@ const PageContentWrapper = ({children}) => {
                         if(wrapperRef && wrapperRef.current) {
                             wrapperRef.current.classList.remove(styles.displayNone);
                         }
-                    }, 50)
+                    }, 50) 
 
                     setTimeout(() => {
                         if(wrapperRef && wrapperRef.current) {
