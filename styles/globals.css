@@ -21,6 +21,15 @@ a {
   text-align: center;
 }
 
-button {
+.btnGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   margin-top: 2rem;
 }
+
+button {
+  margin: 0 0.5rem;
+}
+

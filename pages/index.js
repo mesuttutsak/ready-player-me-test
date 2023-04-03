@@ -7,29 +7,32 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "../components/Modal/Modal";
+import PageContentWrapper from "../components/PageContentWrapper/PageContentWrapper";
 
-const AvatarView = dynamic(() => import("@sarge/avatar-view"), {
-  ssr: false,
-});
+const AvatarView = dynamic(
+  async () => (await import("@sarge/avatar-view")).AvatarView,
+  { ssr: false }
+);
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
   
   const {
-    avatarUrl
+    avatarUrl,
+    authenticatedLayoutMode
   } = useSelector((state) => state);
 
   const [url, setUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
     setUrl(null)
-    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl+'?morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight&useHands=false&textureAtlas=512&meshLod=2&morphTargets=eyesClosed,eyeSquintLeft,eyeSquintRight');
+    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
-    faceTracking: false,
-    orbitControl: false,
     followCursor: true,
     blinkEyes: true,
   };
@@ -89,6 +92,12 @@ export default function Home() {
     }
   }
 
+  
+    
+  useEffect(() => {
+    console.log('2',authenticatedLayoutMode);
+}, [authenticatedLayoutMode])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -98,45 +107,60 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {url !== null ? <>
-                <div className={styles.avartars}>
-                <div className={styles.avatar}>
-                  <h2>3D</h2>
-                  <AvatarView
-                    style={{
-                      opacity: url === null ? 0 : 1,
-                      width: "150px",
-                      height: "150px",
-                      margin: "0 1rem",
-                      background: 'trasparent'
-                    }}
-                    type="3D"
-                    options3d={options3DSetting}
-                    url={`${url}`}
-                  />
-                </div>
-      
-                <div className={styles.avatar}>
-                  <h2>2D</h2>
-                  <AvatarView
-                    style={{
-                      opacity: url === null ? 0 : 1,
-                      width: "150px",
-                      height: "150px",
-                      margin: "0 1rem",
-                    }}
-                    type="2D"
-                    options2d={options2DSetting}
-                    url={`${url}`}
-                  />
-                </div>
-              </div>
+        {url !== null ? 
+        <>
+              { showModal && <Modal onClose={(state) => {  
+                  dispatch({ type: "setAuthenticatedLayoutMode", payload: "default" });
+                  setShowModal(state)
+              }} />
+              }
               
+              <PageContentWrapper>
+                    <div className={styles.avartars}>
+                    <div className={styles.avatar}>
+                      <h2>3D</h2>
+                      <AvatarView
+                        style={{
+                          opacity: url === null ? 0 : 1,
+                          width: "150px",
+                          height: "150px",
+                          margin: "0 1rem",
+                          background: 'trasparent'
+                        }}
+                        type="3D"
+                        options3d={options3DSetting}
+                        url={`${url}`}
+                      />
+                    </div>
+          
+                    <div className={styles.avatar}>
+                      <h2>2D</h2>
+                      <AvatarView
+                        style={{
+                          opacity: url === null ? 0 : 1,
+                          width: "150px",
+                          height: "150px",
+                          margin: "0 1rem",
+                        }}
+                        type="2D"
+                        options2d={options2DSetting}
+                        url={`${url}`}
+                      />
+                    </div>
+                  </div>
 
-              <button onClick={() => router.push("/otherPage")}>
-              go to other page
-            </button>
-            </>
+                  <button onClick={() => router.push("/otherPage")}>
+                    go to other page
+                  </button>
+
+                  <button onClick={() => {
+                    dispatch({ type: "setAuthenticatedLayoutMode", payload: "fullSize" });
+                    setShowModal(true)
+                    }}>
+                    Open Modal
+                  </button>
+              </PageContentWrapper>
+        </>
         : 
         <iframe style={{width: 480, height: 640}} ref={iframeRef} allow="camera *; microphone *; clipboard-write" />
         }
