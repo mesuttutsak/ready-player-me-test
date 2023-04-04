@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/home.module.scss";
 import { useRouter } from "next/router";
 
 import { useEffect, useRef, useState } from "react";
@@ -92,11 +92,19 @@ export default function Home() {
     }
   }
 
-  
-    
+  function resizeScreen(event) {
+    window.dispatchEvent(new Event("resize"));
+  }
+
   useEffect(() => {
-    console.log('2',authenticatedLayoutMode);
-}, [authenticatedLayoutMode])
+    addEventListener("transitionend", resizeScreen);
+    return () => {
+      removeEventListener("transitionend", resizeScreen);
+    };
+  }, [authenticatedLayoutMode, showModal]);
+  
+  const [hideAvatar, setHideAvatar] = useState(true)
+  const [visiblity, setVisiblity] = useState(false)
 
   return (
     <div className={styles.container}>
@@ -112,25 +120,32 @@ export default function Home() {
               { showModal && <Modal onClose={(state) => {  
                   dispatch({ type: "setAuthenticatedLayoutMode", payload: "default" });
                   setShowModal(state)
+                  setTimeout(() => { setHideAvatar(false) }, 750);
               }} />
               }
               
               <PageContentWrapper>
                     <div className={styles.avartars}>
-                    <div className={styles.avatar}>
+                    <div className={styles.avatar} id="mahmut">
                       <h2>3D</h2>
-                      <AvatarView
-                        style={{
-                          opacity: url === null ? 0 : 1,
-                          width: "150px",
-                          height: "150px",
-                          margin: "0 1rem",
-                          background: 'trasparent'
-                        }}
-                        type="3D"
-                        options3d={options3DSetting}
-                        url={`${url}`}
-                      />
+                      <div className={styles.avatarInner}>
+                        <div className={styles.loader}>
+                          <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
+                        </div>
+                        <AvatarView
+                          style={{
+                            opacity:  visiblity && !hideAvatar ? "1" : "0",
+                            width: '150px',
+                            height: '150px',
+                            margin: "0 1rem",
+                            backgroundColor: 'trasparent'
+                          }}
+                          onLoaded={() => setVisiblity(true)}
+                          type="3D"
+                          options3d={options3DSetting}
+                          url={`${url}`}
+                        />
+                      </div>
                     </div>
           
                     <div className={styles.avatar}>
@@ -156,6 +171,7 @@ export default function Home() {
                   <button onClick={() => {
                     dispatch({ type: "setAuthenticatedLayoutMode", payload: "fullSize" });
                     setShowModal(true)
+                    setHideAvatar(true)
                     }}>
                     Open Modal
                   </button>
