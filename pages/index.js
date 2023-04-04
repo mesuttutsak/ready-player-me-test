@@ -102,9 +102,11 @@ export default function Home() {
       removeEventListener("transitionend", resizeScreen);
     };
   }, [authenticatedLayoutMode, showModal]);
-  
-  const [hideAvatar, setHideAvatar] = useState(true)
+
   const [visiblity, setVisiblity] = useState(false)
+
+  
+  const [showAvatarWrap, setShowAvatarWrap] = useState(true)
 
   return (
     <div className={styles.container}>
@@ -120,22 +122,22 @@ export default function Home() {
               { showModal && <Modal onClose={(state) => {  
                   dispatch({ type: "setAuthenticatedLayoutMode", payload: "default" });
                   setShowModal(state)
-                  setTimeout(() => { setHideAvatar(false) }, 750);
+                  setTimeout(() => { setShowAvatarWrap(true) }, 750);
               }} />
               }
               
               <PageContentWrapper> 
                     <div className={styles.avartars}>
                     <div className={styles.avatar} id="mahmut">
-                      <h2>3D</h2>
-                      <div className={styles.avatarInner}>
-                      { visiblity && !hideAvatar ? 
+                      <div className={styles.avatarInner} style={{opacity: showAvatarWrap ? '1' : '0'}}>
+                      { !visiblity && 
                         <div className={styles.loader}>
                           <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
-                        </div> :
+                        </div> 
+                      }
                         <AvatarView
                           style={{
-                            opacity:  visiblity && !hideAvatar ? "1" : "0",
+                            opacity:  visiblity ? "1" : "0",
                             width: '150px',
                             height: '150px',
                             margin: "0 1rem",
@@ -146,11 +148,10 @@ export default function Home() {
                           options3d={options3DSetting}
                           url={`${url}`}
                         />
-                      }
                       </div>
                     </div>
           
-                    <div className={styles.avatar}>
+                    {/* <div className={styles.avatar}>
                       <h2>2D</h2>
                       <AvatarView
                         style={{
@@ -163,7 +164,7 @@ export default function Home() {
                         options2d={options2DSetting}
                         url={`${url}`}
                       />
-                    </div>
+                    </div> */}
                   </div>
 
                   <button onClick={() => router.push("/otherPage")}>
@@ -173,7 +174,7 @@ export default function Home() {
                   <button onClick={() => {
                     dispatch({ type: "setAuthenticatedLayoutMode", payload: "fullSize" });
                     setShowModal(true)
-                    setHideAvatar(true)
+                    setTimeout(() => { setShowAvatarWrap(false) }, 500);
                     }}>
                     Open Modal
                   </button>
