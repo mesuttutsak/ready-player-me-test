@@ -124,7 +124,7 @@ export default function Home() {
               }} />
               }
               
-              <PageContentWrapper>
+              <PageContentWrapper> 
                     <div className={styles.avartars}>
                     <div className={styles.avatar} id="mahmut">
                       <h2>3D</h2>
