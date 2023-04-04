@@ -129,9 +129,10 @@ export default function Home() {
                     <div className={styles.avatar} id="mahmut">
                       <h2>3D</h2>
                       <div className={styles.avatarInner}>
+                      { visiblity && !hideAvatar ? 
                         <div className={styles.loader}>
                           <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
-                        </div>
+                        </div> :
                         <AvatarView
                           style={{
                             opacity:  visiblity && !hideAvatar ? "1" : "0",
@@ -145,6 +146,7 @@ export default function Home() {
                           options3d={options3DSetting}
                           url={`${url}`}
                         />
+                      }
                       </div>
                     </div>
           
