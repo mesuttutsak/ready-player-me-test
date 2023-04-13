@@ -26,6 +26,7 @@ export default function Home() {
   const [alertText, setAlertText] = useState(null);
   const [error2D, setError2D] = useState(false);
   const [error3D, setError3D] = useState(false);
+
   useEffect(() => {
     setUrl(null);
     setAlertText(null)
@@ -162,7 +163,7 @@ export default function Home() {
                       onFailed={(e) => {
                         e?.hasError && setAlertText(e.error)
                         setError3D(true)
-                        alert('3D failed')}
+                      }
                       }
                       fallback={
                         <>
@@ -200,7 +201,6 @@ export default function Home() {
                       onFailed={(e) => {
                         e?.hasError && setAlertText(e.error)
                         alert("2D failed")
-                        setError2D(true)
                       }
                       }
                       fallback={
@@ -216,17 +216,20 @@ export default function Home() {
                 </div>
               </div>
 
-              {alertText !==null && <div className={styles.alert}></div>}
+              {alertText !== null && <div className={styles.alert}>{alertText}</div>}
 
-              {error2D || error3D && <div className={
-                alertText !==null && <>{error2D && '2D hatasını bulmadı'} ,{error3D && '3D hatasını bulmadı'}  </>  }></div>}
+              {alertText !== null && <div className={`${styles.alert} ${styles.warning}`}>Url'in başına errortext eklenerek yanlış gönderilmesi sağlandı <i>setUrl(avatarUrl !== null && "errortext" + avatarUrl)</i></div>}
+
+              {error2D || error3D && <div className={`${styles.alert} ${styles.warning}`}>
+                {alertText !== null && <>{error2D ? '2D hatasını buldu' :  '2D hatasını bulmadı'}, {error3D ? '3D hatasını buldu' : '3D hatasını bulmadı'}  </>  }
+                  </div>}
               
               <button onClick={() => router.push("/otherPage")}>
                 go to other page
               </button>
               
               <button onClick={() => dispatch({ type: "setAvatarUrl", payload: null })}>
-                avatar yarat
+                create new avatar
               </button>
 
               <button

@@ -15,18 +15,25 @@
 .avartars {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .alert {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  min-width: 100%;
+  width: 100%;
+  max-width: 400px;
   background: red;
   color: white;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: .75rem;
+  font-weight: 400;
+  padding: 1rem;
+  text-align: start;
+  margin-bottom: 1rem;
+  overflow-wrap: break-word;
 }
+
+.warning { background: rgb(233, 191, 7) !important; }
 
 .avatarInner {
   img { width: 100%; height: auto; }
