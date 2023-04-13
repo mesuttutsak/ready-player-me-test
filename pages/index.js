@@ -202,6 +202,7 @@ export default function Home() {
                       onLoaded={() => setVisiblity(true)}
                       onFailed={(e) => {
                         e?.hasError && setAlertText(e.error)
+                        setError2D(true)
                       }
                       }
                       fallback={
