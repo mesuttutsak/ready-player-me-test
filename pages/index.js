@@ -161,7 +161,7 @@ export default function Home() {
                         </>
                       }
                       type="3D"
-                      options3d={options3DSetting}
+                      options3D={options3DSetting}
                       url={`${url}`}
                     />
                   </div>
@@ -195,7 +195,7 @@ export default function Home() {
                         </>
                       }
                       type="2D"
-                      options3d={options3DSetting}
+                      options2D={options2DSetting}
                       url={`${url}`}
                     />
                   </div>
