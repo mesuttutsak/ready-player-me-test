@@ -29,7 +29,7 @@ export default function Home() {
   
   useEffect(() => {
     setUrl(null)
-    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
+    avatarUrl !== null && setUrl(avatarUrl !== null && 'errortext'+avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -128,26 +128,51 @@ export default function Home() {
               
               <PageContentWrapper> 
                     <div className={styles.avartars}>
-                    <div className={styles.avatar} id="mahmut">
+                    <div className={styles.avatar} id="mahmut1">
                       <div className={styles.avatarInner} style={{opacity: showAvatarWrap ? '1' : '0'}}>
-                      { !visiblity && 
+                      { false && 
                         <div className={styles.loader}>
                           <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
                         </div> 
                       }
-                        <AvatarView
-                          style={{
-                            opacity:  visiblity ? "1" : "0",
-                            width: '150px',
-                            height: '150px',
-                            margin: "0 1rem",
-                            backgroundColor: 'trasparent'
-                          }}
-                          onLoaded={() => setVisiblity(true)}
-                          type="3D"
-                          options3d={options3DSetting}
-                          url={`${url}`}
-                        />
+                      <AvatarView
+                        style={{
+                          opacity: 1,
+                          width: '150px',
+                          height: '150px',
+                          margin: "0 1rem",
+                          background: 'transparent'
+                        }}
+                        onLoaded={() => setVisiblity(true)}
+                        onFailed={(e) => alert('3D failed')}
+                        fallback= {<><img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"/></>}
+                        type="3D"
+                        options3d={options3DSetting}
+                        url={`${url}`}
+                      />
+                      </div>
+                    </div>                    <div className={styles.avatar} id="mahmut2">
+                      <div className={styles.avatarInner} style={{opacity: showAvatarWrap ? '1' : '0'}}>
+                      { false && 
+                        <div className={styles.loader}>
+                          <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
+                        </div> 
+                      }
+                      <AvatarView
+                        style={{
+                          opacity: 1,
+                          width: '150px',
+                          height: '150px',
+                          margin: "0 1rem",
+                          background: 'transparent'
+                        }}
+                        onLoaded={() => setVisiblity(true)}
+                        onFailed={(e) => alert('2D failed')}
+                        fallback= {<><img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"/></>}
+                        type="2D"
+                        options3d={options3DSetting}
+                        url={`${url}`}
+                      />
                       </div>
                     </div>
           
