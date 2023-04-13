@@ -49,7 +49,7 @@ export default function Home() {
   const subdomain = "demo"; // proje
   useEffect(() => {
     if (iframeRef.current) {
-      iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&bodyType=halfbodyclearCache`;
+      iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&clearCache&bodyType=halfbody`;
 
       window.addEventListener("message", subscribe);
       document.addEventListener("message", subscribe);
