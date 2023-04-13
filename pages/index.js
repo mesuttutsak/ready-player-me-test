@@ -21,18 +21,18 @@ export default function Home() {
 
   const { avatarUrl, authenticatedLayoutMode } = useSelector((state) => state);
 
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState('https://models.readyplayer.me/errortext643806674e30errortext0a075435e368errortext.glb');
   const [showModal, setShowModal] = useState(false);
   const [alertText, setAlertText] = useState(null);
   const [error2D, setError2D] = useState(false);
   const [error3D, setError3D] = useState(false);
 
   useEffect(() => {
-    setUrl(null);
+    // setUrl(null);
     setAlertText(null)
     setError2D(false)
     setError3D(false)
-    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
+    // avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -78,7 +78,7 @@ export default function Home() {
 
     // Get avatar GLB URL
     if (json.eventName === "v1.avatar.exported") {
-      dispatch({ type: "setAvatarUrl", payload:  "errortext" + json.data.url });
+      // dispatch({ type: "setAvatarUrl", payload:  "errortext" + json.data.url });
     }
 
     // Get user id
@@ -200,7 +200,6 @@ export default function Home() {
                       onLoaded={() => setVisiblity(true)}
                       onFailed={(e) => {
                         e?.hasError && setAlertText(e.error)
-                        alert("2D failed")
                       }
                       }
                       fallback={
@@ -218,7 +217,7 @@ export default function Home() {
 
               {alertText !== null && <div className={styles.alert}>{alertText}</div>}
 
-              {alertText !== null && <div className={`${styles.alert} ${styles.warning}`}>Url'in başına errortext eklenerek yanlış gönderilmesi sağlandı <i>setUrl(avatarUrl !== null && "errortext" + avatarUrl)</i></div>}
+              {alertText !== null && <div className={`${styles.alert} ${styles.warning}`}>Url'ine <b><i>errortext</i></b> metinleri eklenerek yanlış gönderilmesi sağlandı</div>}
 
               {error2D || error3D && <div className={`${styles.alert} ${styles.warning}`}>
                 {alertText !== null && <>{error2D ? '2D hatasını buldu' :  '2D hatasını bulmadı'}, {error3D ? '3D hatasını buldu' : '3D hatasını bulmadı'}  </>  }
@@ -228,9 +227,9 @@ export default function Home() {
                 go to other page
               </button>
               
-              <button onClick={() => dispatch({ type: "setAvatarUrl", payload: null })}>
+              {/* <button onClick={() => dispatch({ type: "setAvatarUrl", payload: null })}>
                 create new avatar
-              </button>
+              </button> */}
 
               <button
                 onClick={() => {
