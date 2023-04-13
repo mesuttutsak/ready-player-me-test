@@ -18,18 +18,15 @@ const AvatarView = dynamic(
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
-  
-  const {
-    avatarUrl,
-    authenticatedLayoutMode
-  } = useSelector((state) => state);
+
+  const { avatarUrl, authenticatedLayoutMode } = useSelector((state) => state);
 
   const [url, setUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
+
   useEffect(() => {
-    setUrl(null)
-    avatarUrl !== null && setUrl(avatarUrl !== null && 'errortext'+avatarUrl);
+    setUrl(null);
+    avatarUrl !== null && setUrl(avatarUrl !== null && "errortext" + avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -44,42 +41,42 @@ export default function Home() {
 
   const iframeRef = useRef(null);
 
-  const subdomain = 'demo';  // proje
-  useEffect(() =>{
-    if(iframeRef.current){
+  const subdomain = "demo"; // proje
+  useEffect(() => {
+    if (iframeRef.current) {
       iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&bodyType=halfbody`;
 
-      window.addEventListener('message', subscribe);
-      document.addEventListener('message', subscribe);
+      window.addEventListener("message", subscribe);
+      document.addEventListener("message", subscribe);
     }
-  }, [url])
+  }, [url]);
 
   function subscribe(event) {
     const json = parse(event);
 
-    if (json?.source !== 'readyplayerme') {
+    if (json?.source !== "readyplayerme") {
       return;
     }
 
     // Susbribe to all events sent from Ready Player Me once frame is ready
-    if (json.eventName === 'v1.frame.ready' && iframeRef.current) {
+    if (json.eventName === "v1.frame.ready" && iframeRef.current) {
       iframeRef.current.contentWindow?.postMessage(
         JSON.stringify({
-          target: 'readyplayerme',
-          type: 'subscribe',
-          eventName: 'v1.**'
+          target: "readyplayerme",
+          type: "subscribe",
+          eventName: "v1.**",
         }),
-        '*'
+        "*"
       );
     }
 
     // Get avatar GLB URL
-    if (json.eventName === 'v1.avatar.exported') {
+    if (json.eventName === "v1.avatar.exported") {
       dispatch({ type: "setAvatarUrl", payload: json.data.url });
     }
 
     // Get user id
-    if (json.eventName === 'v1.user.set') {
+    if (json.eventName === "v1.user.set") {
       console.log(`User with id ${json.data.id} set: ${JSON.stringify(json)}`);
     }
   }
@@ -103,10 +100,9 @@ export default function Home() {
     };
   }, [authenticatedLayoutMode, showModal]);
 
-  const [visiblity, setVisiblity] = useState(false)
+  const [visiblity, setVisiblity] = useState(false);
 
-  
-  const [showAvatarWrap, setShowAvatarWrap] = useState(true)
+  const [showAvatarWrap, setShowAvatarWrap] = useState(true);
 
   return (
     <div className={styles.container}>
@@ -117,97 +113,122 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {url !== null ? 
-        <>
-              { showModal && <Modal onClose={(state) => {  
-                  dispatch({ type: "setAuthenticatedLayoutMode", payload: "default" });
-                  setShowModal(state)
-                  setTimeout(() => { setShowAvatarWrap(true) }, 750);
-              }} />
-              }
-              
-              <PageContentWrapper> 
-                    <div className={styles.avartars}>
-                    <div className={styles.avatar} id="mahmut1">
-                      <div className={styles.avatarInner} style={{opacity: showAvatarWrap ? '1' : '0'}}>
-                      { false && 
-                        <div className={styles.loader}>
-                          <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
-                        </div> 
-                      }
-                      <AvatarView
-                        style={{
-                          opacity: 1,
-                          width: '150px',
-                          height: '150px',
-                          margin: "0 1rem",
-                          background: 'transparent'
-                        }}
-                        onLoaded={() => setVisiblity(true)}
-                        onFailed={(e) => alert('3D failed')}
-                        fallback= {<><img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"/></>}
-                        type="3D"
-                        options3d={options3DSetting}
-                        url={`${url}`}
-                      />
+        {url !== null ? (
+          <>
+            {showModal && (
+              <Modal
+                onClose={(state) => {
+                  dispatch({
+                    type: "setAuthenticatedLayoutMode",
+                    payload: "default",
+                  });
+                  setShowModal(state);
+                  setTimeout(() => {
+                    setShowAvatarWrap(true);
+                  }, 750);
+                }}
+              />
+            )}
+
+            <PageContentWrapper>
+              <div className={styles.avartars}>
+                <div className={styles.avatar} id="mahmut1">
+                  <div
+                    className={styles.avatarInner}
+                    style={{ opacity: showAvatarWrap ? "1" : "0" }}
+                  >
+                    {false && (
+                      <div className={styles.loader}>
+                        <img
+                          src="https://cdn.mallconomy.com/images/app/icon/spinner.png"
+                          srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png"
+                        />
                       </div>
-                    </div>                    <div className={styles.avatar} id="mahmut2">
-                      <div className={styles.avatarInner} style={{opacity: showAvatarWrap ? '1' : '0'}}>
-                      { false && 
-                        <div className={styles.loader}>
-                          <img src="https://cdn.mallconomy.com/images/app/icon/spinner.png" srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png" />
-                        </div> 
+                    )}
+                    <AvatarView
+                      style={{
+                        opacity: 1,
+                        width: "150px",
+                        height: "150px",
+                        margin: "0 1rem",
+                        background: "transparent",
+                      }}
+                      onLoaded={() => setVisiblity(true)}
+                      onFailed={(e) => alert("3D failed")}
+                      fallback={
+                        <>
+                          <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" />
+                        </>
                       }
-                      <AvatarView
-                        style={{
-                          opacity: 1,
-                          width: '150px',
-                          height: '150px',
-                          margin: "0 1rem",
-                          background: 'transparent'
-                        }}
-                        onLoaded={() => setVisiblity(true)}
-                        onFailed={(e) => alert('2D failed')}
-                        fallback= {<><img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"/></>}
-                        type="2D"
-                        options3d={options3DSetting}
-                        url={`${url}`}
-                      />
-                      </div>
-                    </div>
-          
-                    {/* <div className={styles.avatar}>
-                      <h2>2D</h2>
-                      <AvatarView
-                        style={{
-                          opacity: url === null ? 0 : 1,
-                          width: "150px",
-                          height: "150px",
-                          margin: "0 1rem",
-                        }}
-                        type="2D"
-                        options2d={options2DSetting}
-                        url={`${url}`}
-                      />
-                    </div> */}
+                      type="3D"
+                      options3d={options3DSetting}
+                      url={`${url}`}
+                    />
                   </div>
+                </div>{" "}
+                <div className={styles.avatar} id="mahmut2">
+                  <div
+                    className={styles.avatarInner}
+                    style={{ opacity: showAvatarWrap ? "1" : "0" }}
+                  >
+                    {false && (
+                      <div className={styles.loader}>
+                        <img
+                          src="https://cdn.mallconomy.com/images/app/icon/spinner.png"
+                          srcSet="https://cdn.mallconomy.com/images/app/icon/spinner@2x.png"
+                        />
+                      </div>
+                    )}
+                    <AvatarView
+                      style={{
+                        opacity: 1,
+                        width: "150px",
+                        height: "150px",
+                        margin: "0 1rem",
+                        background: "transparent",
+                      }}
+                      onLoaded={() => setVisiblity(true)}
+                      onFailed={(e) => alert("2D failed")}
+                      fallback={
+                        <>
+                          <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" />
+                        </>
+                      }
+                      type="2D"
+                      options3d={options3DSetting}
+                      url={`${url}`}
+                    />
+                  </div>
+                </div>
+              </div>
 
-                  <button onClick={() => router.push("/otherPage")}>
-                    go to other page
-                  </button>
+              <button onClick={() => router.push("/otherPage")}>
+                go to other page
+              </button>
 
-                  <button onClick={() => {
-                    dispatch({ type: "setAuthenticatedLayoutMode", payload: "fullSize" });
-                    setShowModal(true)
-                    setTimeout(() => { setShowAvatarWrap(false) }, 500);
-                    }}>
-                    Open Modal
-                  </button>
-              </PageContentWrapper>
-        </>
-        : 
-        <iframe style={{width: 480, height: 640}} ref={iframeRef} allow="camera *; microphone *; clipboard-write" />
-        }
+              <button
+                onClick={() => {
+                  dispatch({
+                    type: "setAuthenticatedLayoutMode",
+                    payload: "fullSize",
+                  });
+                  setShowModal(true);
+                  setTimeout(() => {
+                    setShowAvatarWrap(false);
+                  }, 500);
+                }}
+              >
+                Open Modal
+              </button>
+            </PageContentWrapper>
+          </>
+        ) : (
+          <iframe
+            style={{ width: 480, height: 640 }}
+            ref={iframeRef}
+            allow="camera *; microphone *; clipboard-write"
+          />
+        )}
       </main>
     </div>
   );
