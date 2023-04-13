@@ -139,6 +139,7 @@ export default function Home() {
             <PageContentWrapper>
               <div className={styles.avartars}>
                 <div className={styles.avatar} id="mahmut1">
+                  <h3>3D</h3>
                   <div
                     className={styles.avatarInner}
                     style={{ opacity: showAvatarWrap ? "1" : "0" }}
@@ -156,7 +157,7 @@ export default function Home() {
                         opacity: 1,
                         width: "150px",
                         height: "150px",
-                        margin: "0 1rem",
+                        margin: "0",
                         background: "transparent",
                       }}
                       onLoaded={() => setVisiblity(true)}
@@ -177,6 +178,7 @@ export default function Home() {
                   </div>
                 </div>{" "}
                 <div className={styles.avatar} id="mahmut2">
+                  <h3>2D</h3>
                   <div
                     className={styles.avatarInner}
                     style={{ opacity: showAvatarWrap ? "1" : "0" }}
