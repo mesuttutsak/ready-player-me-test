@@ -32,7 +32,7 @@ export default function Home() {
     setAlertText(null)
     setError2D(false)
     setError3D(false)
-    avatarUrl !== null && setUrl(avatarUrl !== null && "errortext" + avatarUrl);
+    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -78,7 +78,7 @@ export default function Home() {
 
     // Get avatar GLB URL
     if (json.eventName === "v1.avatar.exported") {
-      dispatch({ type: "setAvatarUrl", payload: json.data.url });
+      dispatch({ type: "setAvatarUrl", payload:  "errortext" + json.data.url });
     }
 
     // Get user id
