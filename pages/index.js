@@ -24,9 +24,13 @@ export default function Home() {
   const [url, setUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [alertText, setAlertText] = useState(null);
+  const [error2D, setError2D] = useState(false);
+  const [error3D, setError3D] = useState(false);
   useEffect(() => {
     setUrl(null);
     setAlertText(null)
+    setError2D(false)
+    setError3D(false)
     avatarUrl !== null && setUrl(avatarUrl !== null && "errortext" + avatarUrl);
   }, [avatarUrl]);
 
@@ -156,8 +160,10 @@ export default function Home() {
                       }}
                       onLoaded={() => setVisiblity(true)}
                       onFailed={(e) => {
-                        console.log('mahmut', e);
-                         alert('3D failed')}}
+                        e?.hasError && setAlertText(e.error)
+                        setError3D(true)
+                        alert('3D failed')}
+                      }
                       fallback={
                         <>
                           <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" />
@@ -191,7 +197,12 @@ export default function Home() {
                         background: "transparent",
                       }}
                       onLoaded={() => setVisiblity(true)}
-                      onFailed={(e) => alert("2D failed")}
+                      onFailed={(e) => {
+                        e?.hasError && setAlertText(e.error)
+                        alert("2D failed")
+                        setError2D(true)
+                      }
+                      }
                       fallback={
                         <>
                           <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" />
@@ -207,8 +218,15 @@ export default function Home() {
 
               {alertText !==null && <div className={styles.alert}></div>}
 
+              {error2D || error3D && <div className={
+                alertText !==null && <>{error2D && '2D hatasını bulmadı'} ,{error3D && '3D hatasını bulmadı'}  </>  }></div>}
+              
               <button onClick={() => router.push("/otherPage")}>
                 go to other page
+              </button>
+              
+              <button onClick={() => dispatch({ type: "setAvatarUrl", payload: null })}>
+                avatar yarat
               </button>
 
               <button
