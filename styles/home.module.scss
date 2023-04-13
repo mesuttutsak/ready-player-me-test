@@ -17,6 +17,16 @@
   flex-direction: row;
 }
 
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  min-width: 100%;
+  background: red;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+}
 
 .avatarInner {
   img { width: 100%; height: auto; }

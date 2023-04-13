@@ -23,9 +23,10 @@ export default function Home() {
 
   const [url, setUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [alertText, setAlertText] = useState(null);
   useEffect(() => {
     setUrl(null);
+    setAlertText(null)
     avatarUrl !== null && setUrl(avatarUrl !== null && "errortext" + avatarUrl);
   }, [avatarUrl]);
 
@@ -44,7 +45,7 @@ export default function Home() {
   const subdomain = "demo"; // proje
   useEffect(() => {
     if (iframeRef.current) {
-      iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&bodyType=halfbody`;
+      iframeRef.current.src = `https://${subdomain}.readyplayer.me/avatar?frameApi&bodyType=halfbodyclearCache`;
 
       window.addEventListener("message", subscribe);
       document.addEventListener("message", subscribe);
@@ -154,7 +155,9 @@ export default function Home() {
                         background: "transparent",
                       }}
                       onLoaded={() => setVisiblity(true)}
-                      onFailed={(e) => alert("3D failed")}
+                      onFailed={(e) => {
+                        console.log('mahmut', e);
+                         alert('3D failed')}}
                       fallback={
                         <>
                           <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg" />
@@ -201,6 +204,8 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+
+              {alertText !==null && <div className={styles.alert}></div>}
 
               <button onClick={() => router.push("/otherPage")}>
                 go to other page
