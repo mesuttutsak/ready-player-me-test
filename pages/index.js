@@ -21,18 +21,18 @@ export default function Home() {
 
   const { avatarUrl, authenticatedLayoutMode } = useSelector((state) => state);
 
-  const [url, setUrl] = useState('https://models.readyplayer.me/errortext643806674e30errortext0a075435e368errortext.glb');
+  const [url, setUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [alertText, setAlertText] = useState(null);
   const [error2D, setError2D] = useState(false);
   const [error3D, setError3D] = useState(false);
 
   useEffect(() => {
-    // setUrl(null);
+    setUrl(null);
     setAlertText(null)
     setError2D(false)
     setError3D(false)
-    // avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
+    avatarUrl !== null && setUrl(avatarUrl !== null && avatarUrl);
   }, [avatarUrl]);
 
   const options3DSetting = {
@@ -196,7 +196,7 @@ export default function Home() {
                         opacity: 1,
                         width: "150px",
                         height: "150px",
-                        margin: "0 1rem",
+                        margin: "0",
                         background: "transparent",
                       }}
                       onLoaded={() => setVisiblity(true)}
@@ -220,7 +220,7 @@ export default function Home() {
 
               {alertText !== null && <div className={styles.alert}>{alertText}</div>}
 
-              {alertText !== null && <div className={`${styles.alert} ${styles.warning}`}>Url'ine <b><i>errortext</i></b> metinleri eklenerek yanlış gönderilmesi sağlandı</div>}
+              {alertText !== null && <div className={`${styles.alert} ${styles.warning}`}>Url&apos;ine <b><i>errortext</i></b> metinleri eklenerek yanlış gönderilmesi sağlandı</div>}
 
               {error2D || error3D && <div className={`${styles.alert} ${styles.warning}`}>
                 {alertText !== null && <>{error2D ? '2D hatasını buldu' :  '2D hatasını bulmadı'}, {error3D ? '3D hatasını buldu' : '3D hatasını bulmadı'}  </>  }
